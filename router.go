@@ -52,26 +52,6 @@ func (r *Router) AddRegExpRoute(name string, method string, re *regexp.Regexp, h
 	return r
 }
 
-// AddSubRouter adds a path-prefixed Router to an existing Router
-func (r *Router) AddSubRouter(name string, prefix string, subRouter *Router) *Router {
-	re := regexp.MustCompile("^" + prefix)
-
-	r.AddRoute(name, &Route{
-		Match: func(req events.APIGatewayProxyRequest) bool {
-			if !re.MatchString(req.Path) {
-				return false
-			}
-
-			_, _, err := subRouter.firstMatch(req)
-
-			return err == nil
-		},
-		Handle: subRouter.Handle,
-	})
-
-	return r
-}
-
 // Handle handles an APIGateway request event
 func (r *Router) Handle(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	name, route, err := r.firstMatch(req)

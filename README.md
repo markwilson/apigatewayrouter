@@ -51,18 +51,5 @@ func main() {
 			StatusCode: 200,
 		}, nil
 	})
-
-	sr := apigatewayrouter.NewRouter()
-	sr.AddStaticRoute("health4", http.MethodGet, "/check/health4", func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-		log.Println(r.CurrentRouteName)
-
-		return events.APIGatewayProxyResponse{
-			Body:       "OK",
-			StatusCode: 200,
-		}, nil
-	})
-	r.AddSubRouter("check", "/check", sr)
-
-	lambda.Start(r.Handle)
 }
 ```
