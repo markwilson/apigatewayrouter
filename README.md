@@ -2,6 +2,8 @@
 
 Library for routing APIGateway requests in a Lambda function.
 
+![Build status](https://travis-ci.com/markwilson/apigatewayrouter.svg?branch=master)
+
 ## Example usage
 
 ``` go
