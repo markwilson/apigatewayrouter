@@ -1,3 +1,4 @@
+// Package apigatewayrouter provides basic routing for APIGateway-triggered Lambda functions
 package apigatewayrouter
 
 import (
