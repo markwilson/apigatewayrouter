@@ -30,24 +30,24 @@ func (r *Router) AddRoute(name string, route *Route) *Router {
 
 // AddStaticRoute adds a static URI matcher and handler to a Router
 func (r *Router) AddStaticRoute(name string, method string, uri string, handler HandleFunc) *Router {
-	r.Routes[name] = &Route{
+	r.AddRoute(name, &Route{
 		Match: func(req events.APIGatewayProxyRequest) bool {
 			return req.Path == uri && req.HTTPMethod == method
 		},
 		Handle: handler,
-	}
+	})
 
 	return r
 }
 
 // AddRegExpRoute adds a regular expression matcher and handler to a Router
 func (r *Router) AddRegExpRoute(name string, method string, re *regexp.Regexp, handler HandleFunc) *Router {
-	r.Routes[name] = &Route{
+	r.AddRoute(name, &Route{
 		Match: func(req events.APIGatewayProxyRequest) bool {
 			return re.MatchString(req.Path) && req.HTTPMethod == method
 		},
 		Handle: handler,
-	}
+	})
 
 	return r
 }
@@ -56,7 +56,7 @@ func (r *Router) AddRegExpRoute(name string, method string, re *regexp.Regexp, h
 func (r *Router) AddSubRouter(name string, prefix string, subRouter *Router) *Router {
 	re := regexp.MustCompile("^" + prefix)
 
-	r.Routes[name] = &Route{
+	r.AddRoute(name, &Route{
 		Match: func(req events.APIGatewayProxyRequest) bool {
 			if !re.MatchString(req.Path) {
 				return false
@@ -67,7 +67,7 @@ func (r *Router) AddSubRouter(name string, prefix string, subRouter *Router) *Ro
 			return err == nil
 		},
 		Handle: subRouter.Handle,
-	}
+	})
 
 	return r
 }
