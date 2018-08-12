@@ -5,6 +5,10 @@ Library for routing APIGateway requests in a Lambda function.
 [![Build Status](https://travis-ci.com/markwilson/apigatewayrouter.svg?branch=master)](https://travis-ci.com/markwilson/apigatewayrouter)
 [![Coverage Status](https://coveralls.io/repos/github/markwilson/apigatewayrouter/badge.svg?branch=master)](https://coveralls.io/github/markwilson/apigatewayrouter)
 
+## Docs
+
+[https://godoc.org/github.com/markwilson/apigatewayrouter](https://godoc.org/github.com/markwilson/apigatewayrouter)
+
 ## Example usage
 
 ``` go
