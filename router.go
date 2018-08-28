@@ -15,6 +15,7 @@ import (
 type Router struct {
 	CurrentRouteName string
 	Routes           map[string]*Route
+	NotFound         HandleFunc
 }
 
 // NewRouter creates a new empty Router.
@@ -22,6 +23,7 @@ func NewRouter() *Router {
 	return &Router{
 		"",
 		map[string]*Route{},
+		nil,
 	}
 }
 
@@ -74,7 +76,11 @@ func (r *Router) AddRegExpRoute(name string, method string, re *regexp.Regexp, h
 func (r *Router) Handle(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	name, route, err := r.firstMatch(req)
 	if err != nil {
-		return events.APIGatewayProxyResponse{}, errors.New("Not found")
+		if r.NotFound == nil {
+			return events.APIGatewayProxyResponse{}, errors.New("Not found")
+		}
+
+		return r.NotFound(req)
 	}
 
 	r.CurrentRouteName = name
