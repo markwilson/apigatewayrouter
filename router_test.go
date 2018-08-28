@@ -132,6 +132,27 @@ func TestHandlerThrowsNotFound(t *testing.T) {
 	assert.Equal(t, "Not found", err.Error())
 }
 
+func TestHandlerUsesCustomNotFound(t *testing.T) {
+	req := events.APIGatewayProxyRequest{
+		Path:       "/test",
+		HTTPMethod: http.MethodPost,
+	}
+
+	r := NewRouter()
+	r.NotFound = func(_ events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+		return events.APIGatewayProxyResponse{
+			Body: "Custom Not Found",
+			StatusCode: 403,
+		}, nil
+	}
+
+	res, err := r.Handle(req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Custom Not Found", res.Body)
+	assert.Equal(t, 403, res.StatusCode)
+}
+
 func TestHandlerSetsCurrentRouteName(t *testing.T) {
 	req := events.APIGatewayProxyRequest{
 		Path:       "/test",
