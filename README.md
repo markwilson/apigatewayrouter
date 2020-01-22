@@ -59,5 +59,7 @@ func main() {
 			StatusCode: 200,
 		}, nil
 	})
+	
+	lambda.Start(r.Handle)
 }
 ```
